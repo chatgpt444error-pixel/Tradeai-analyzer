@@ -53,10 +53,22 @@
 </header>
 
 <div class="box">
-    <h2>Market Analysis</h2>
-    <p>Analyze market structure, support/resistance, entries, stop-loss and risk/reward.</p>
+    <h2>📊 TradeAI Chart Analyzer</h2>
+
+    <p>Upload a trading chart and prepare it for analysis.</p>
+
+    <input type="file" id="chartUpload" accept="image/*" onchange="previewChart()">
+
+    <br><br>
+
+    <img id="chartPreview"
+         style="display:none; max-width:100%; border-radius:12px; margin-top:10px;">
+
+    <br>
+
     <button onclick="analyze()">Analyze Chart</button>
-    <p id="result"></p>
+
+    <div id="result" style="margin-top:20px;"></div>
 </div>
 
 <script>
