@@ -422,7 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // If /analyze doesn't exist, try /api/analyze.
       if (!response || response.status === 404) {
 
-        response = await fetch("/api/analyze", {
+        response = await fetch("https://tradeai-analyzer.onrender.com/api/analyze", {
           method: "POST",
           body: formData
         });
