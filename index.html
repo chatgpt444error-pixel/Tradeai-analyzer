@@ -2,230 +2,438 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#080b10">
-<title>TradeLens — Trading Analysis</title>
+<title>TradeLens - Trading Analysis</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#080b10;
-  --panel:#0e131b;
-  --panel2:#111823;
-  --border:#202a36;
-  --text:#e7edf5;
-  --muted:#7f8b9b;
-  --green:#19c37d;
-  --red:#ef5350;
-  --yellow:#f5b942;
-  --blue:#4d9fff;
-  --purple:#9b7cff;
+--bg:#080b10;--panel:#0f141c;--panel2:#131a23;
+--border:#222b36;--text:#e8edf5;--muted:#7f8b9b;
+--green:#19c37d;--red:#ef5350;--yellow:#f5b942;
+--blue:#4d9fff;--purple:#9b7cff
 }
-
 body{
-  font-family:Inter,Arial,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
+font-family:Arial,Helvetica,sans-serif;
+background:var(--bg);color:var(--text);min-height:100vh
 }
-
-button,select{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
+button,select,input{font:inherit}
+button{cursor:pointer}
 
 .topbar{
-  height:64px;
-  background:#0b0f15;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-  position:sticky;
-  top:0;
-  z-index:20;
+height:64px;background:#0b0f15;border-bottom:1px solid var(--border);
+display:flex;align-items:center;justify-content:space-between;
+padding:0 18px;position:sticky;top:0;z-index:10
 }
+.logo{font-size:20px;font-weight:800}
+.logo span{color:var(--green)}
+.status{font-size:12px;color:var(--green)}
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:20px;
-  font-weight:800;
-  letter-spacing:.5px;
+.controls{
+display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px;
+border-bottom:1px solid var(--border);background:var(--panel)
 }
-
-.logoMark{
-  width:34px;
-  height:34px;
-  border-radius:9px;
-  background:linear-gradient(135deg,#19c37d,#1675ff);
-  display:grid;
-  place-items:center;
-  font-weight:900;
-  color:white;
+select,.tool{
+background:#121923;color:#dce4ee;border:1px solid var(--border);
+border-radius:6px;padding:8px 10px;outline:none
 }
-
-.live{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:#9ba7b7;
-  font-size:12px;
-}
-
-.dot{
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 10px var(--green);
-}
-
-.topActions{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.select{
-  background:#121923;
-  color:var(--text);
-  border:1px solid var(--border);
-  border-radius:7px;
-  padding:9px 11px;
-  outline:none;
-}
-
-.iconBtn{
-  width:38px;
-  height:38px;
-  border:1px solid var(--border);
-  background:#111720;
-  color:#aab5c4;
-  border-radius:8px;
-}
+select:focus,.tool:hover{border-color:var(--blue)}
 
 .layout{
-  max-width:1600px;
-  margin:auto;
-  padding:14px;
+display:grid;grid-template-columns:minmax(0,1fr) 330px;
+gap:12px;padding:12px
+}
+@media(max-width:850px){
+.layout{grid-template-columns:1fr}
 }
 
-.marketStrip{
-  display:grid;
-  grid-template-columns:1.2fr repeat(4,1fr);
-  gap:10px;
-  margin-bottom:12px;
+.card{
+background:var(--panel);border:1px solid var(--border);
+border-radius:10px;overflow:hidden
 }
-
-.marketCard{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:13px;
-}
-
-.marketCard .name{
-  color:var(--muted);
-  font-size:11px;
-  margin-bottom:6px;
-}
-
-.marketCard .price{
-  font-size:18px;
-  font-weight:750;
-}
-
-.change{
-  font-size:11px;
-  margin-top:5px;
-}
-
-.green{color:var(--green)}
-.red{color:var(--red)}
-.yellow{color:var(--yellow)}
-
-.mainGrid{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) 330px;
-  gap:12px;
-}
-
-.chartPanel{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:10px;
-  overflow:hidden;
+.cardTitle{
+padding:12px 14px;border-bottom:1px solid var(--border);
+font-weight:700;display:flex;justify-content:space-between;
+align-items:center
 }
 
 .chartHeader{
-  padding:14px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
+padding:12px 14px;border-bottom:1px solid var(--border);
+display:flex;justify-content:space-between;align-items:center;
+gap:10px;flex-wrap:wrap
 }
+.asset{display:flex;align-items:center;gap:10px}
+.assetSymbol{font-size:18px;font-weight:800}
+.assetInfo{color:var(--muted);font-size:11px;margin-top:3px}
+.price{font-size:20px;font-weight:800}
+.up{color:var(--green)}
+.down{color:var(--red)}
 
-.asset{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.assetSymbol{
-  font-size:18px;
-  font-weight:800;
-}
-
-.assetInfo{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:3px;
-}
-
-.timeframes{
-  display:flex;
-  gap:4px;
-  flex-wrap:wrap;
-}
-
+.timeframes{display:flex;gap:4px;flex-wrap:wrap}
 .tf{
-  border:0;
-  background:transparent;
-  color:var(--muted);
-  padding:7px 9px;
-  border-radius:5px;
-  font-size:12px;
+border:0;background:transparent;color:var(--muted);
+padding:7px 9px;border-radius:5px;font-size:12px
 }
-
-.tf.active{
-  color:white;
-  background:#1b2633;
-}
+.tf.active{color:white;background:#1b2633}
 
 .chartTools{
-  padding:9px 12px;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
+padding:9px 12px;border-bottom:1px solid var(--border);
+display:flex;gap:6px;flex-wrap:wrap
 }
 
-.tool{
-  background:#121923;
-  border:1px solid var(--border);
-  color:#a9b4c2;
-  border-radius:5px;
-  padding:6px 9px;
-  font-size:11px;
+.chartWrap{
+height:470px;position:relative;background:#0a0e14;
+padding:8px
+}
+canvas{width:100%;height:100%;display:block}
+
+.metrics{
+display:grid;grid-template-columns:repeat(4,1fr);
+border-top:1px solid var(--border)
+}
+.metric{padding:12px;border-right:1px solid var(--border)}
+.metric:last-child{border:0}
+.metric label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
+.metric strong{font-size:15px}
+@media(max-width:600px){
+.metrics{grid-template-columns:repeat(2,1fr)}
+.metric:nth-child(2){border-right:0}
+}
+
+.sidebar{display:flex;flex-direction:column;gap:12px}
+
+.signal{
+margin:14px;padding:16px;border-radius:8px;
+text-align:center;background:#10251d;border:1px solid #1c5c42
+}
+.signal strong{display:block;font-size:25px;color:var(--green)}
+.signal small{color:var(--muted)}
+
+.rows{padding:6px 14px 12px}
+.row{
+display:flex;justify-content:space-between;padding:10px 0;
+border-bottom:1px solid #1c232d;font-size:13px
+}
+.row:last-child{border:0}
+.label{color:var(--muted)}
+
+.level{
+margin:12px 14px;padding:10px;border-radius:6px;
+background:#121923;border-left:3px solid var(--blue)
+}
+.level.red{border-left-color:var(--red)}
+.level.green{border-left-color:var(--green)}
+.level.yellow{border-left-color:var(--yellow)}
+.level b{display:block;margin-bottom:4px}
+
+.risk{padding:14px}
+.riskbar{height:8px;background:#202936;border-radius:5px;overflow:hidden;margin:8px 0}
+.riskfill{height:100%;width:35%;background:var(--green)}
+.small{font-size:11px;color:var(--muted)}
+
+.bottom{
+padding:12px 18px;color:var(--muted);font-size:11px;
+text-align:center;border-top:1px solid var(--border)
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="logo">Trade<span>Lens</span></div>
+  <div class="status">● MARKET ANALYSIS ONLINE</div>
+</header>
+
+<section class="controls">
+  <select id="asset">
+    <option value="BTC">BTC / USD</option>
+    <option value="ETH">ETH / USD</option>
+    <option value="XAU">XAU / USD</option>
+    <option value="EUR">EUR / USD</option>
+  </select>
+
+  <select id="market">
+    <option>Crypto</option>
+    <option>Forex</option>
+    <option>Commodities</option>
+  </select>
+
+  <button class="tool" onclick="randomize()">↻ Refresh Analysis</button>
+  <button class="tool" onclick="toggleTheme()">◐ Theme</button>
+</section>
+
+<main class="layout">
+
+<section class="card">
+
+<div class="chartHeader">
+  <div class="asset">
+    <div>
+      <div class="assetSymbol" id="assetName">BTC / USD</div>
+      <div class="assetInfo">TradeLens market analysis</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="price" id="price">$67,420.50</div>
+    <div class="up" id="change">+2.41%</div>
+  </div>
+</div>
+
+<div class="timeframes">
+  <button class="tf active" onclick="setTF(this)">1m</button>
+  <button class="tf" onclick="setTF(this)">5m</button>
+  <button class="tf" onclick="setTF(this)">15m</button>
+  <button class="tf" onclick="setTF(this)">1H</button>
+  <button class="tf" onclick="setTF(this)">4H</button>
+  <button class="tf" onclick="setTF(this)">1D</button>
+</div>
+
+<div class="chartTools">
+  <button class="tool" onclick="indicator('MA')">MA</button>
+  <button class="tool" onclick="indicator('RSI')">RSI</button>
+  <button class="tool" onclick="indicator('VOL')">Volume</button>
+  <button class="tool" onclick="randomize()">New Data</button>
+</div>
+
+<div class="chartWrap">
+  <canvas id="chart"></canvas>
+</div>
+
+<div class="metrics">
+  <div class="metric">
+    <label>MARKET TREND</label>
+    <strong class="up" id="trend">BULLISH</strong>
+  </div>
+  <div class="metric">
+    <label>RSI</label>
+    <strong id="rsi">64.8</strong>
+  </div>
+  <div class="metric">
+    <label>VOLUME</label>
+    <strong id="volume">HIGH</strong>
+  </div>
+  <div class="metric">
+    <label>CONFIDENCE</label>
+    <strong class="up" id="confidence">82%</strong>
+  </div>
+</div>
+
+</section>
+
+<aside class="sidebar">
+
+<div class="card">
+<div class="cardTitle">Trade Signal <span>LIVE</span></div>
+
+<div class="signal">
+  <strong id="signal">BUY</strong>
+  <small id="signalText">Bullish market structure detected</small>
+</div>
+
+<div class="rows">
+  <div class="row"><span class="label">Entry</span><b id="entry">$67,420</b></div>
+  <div class="row"><span class="label">Stop Loss</span><b class="down" id="stop">$66,150</b></div>
+  <div class="row"><span class="label">Take Profit</span><b class="up" id="target">$70,100</b></div>
+  <div class="row"><span class="label">Risk / Reward</span><b id="rr">1 : 2.1</b></div>
+</div>
+</div>
+
+<div class="card">
+<div class="cardTitle">Key Levels</div>
+
+<div class="level red">
+<b>Resistance</b>
+<span id="resistance">$70,100</span>
+</div>
+
+<div class="level yellow">
+<b>Pivot</b>
+<span id="pivot">$67,420</span>
+</div>
+
+<div class="level green">
+<b>Support</b>
+<span id="support">$64,850</span>
+</div>
+</div>
+
+<div class="card">
+<div class="cardTitle">Risk Analysis</div>
+
+<div class="risk">
+<div class="row">
+<span class="label">Risk Level</span>
+<b class="up">LOW</b>
+</div>
+
+<div class="riskbar">
+<div class="riskfill"></div>
+</div>
+
+<div class="small">
+Recommended risk per trade: 1–2%<br>
+Always confirm market conditions before entering.
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="cardTitle">Market Structure</div>
+<div class="rows">
+<div class="row"><span class="label">Higher Highs</span><b class="up">✓</b></div>
+<div class="row"><span class="label">Higher Lows</span><b class="up">✓</b></div>
+<div class="row"><span class="label">Momentum</span><b class="up">Strong</b></div>
+<div class="row"><span class="label">Bias</span><b class="up">Bullish</b></div>
+</div>
+</div>
+
+</aside>
+</main>
+
+<footer class="bottom">
+TradeLens • Trading analysis dashboard • Analysis is informational, not financial advice.
+</footer>
+
+<script>
+const canvas=document.getElementById("chart");
+const ctx=canvas.getContext("2d");
+let points=[];
+let base=67420;
+
+function resize(){
+  const r=canvas.getBoundingClientRect();
+  canvas.width=r.width*devicePixelRatio;
+  canvas.height=r.height*devicePixelRatio;
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  draw();
+}
+
+function makeData(){
+  points=[];
+  let p=base;
+  for(let i=0;i<90;i++){
+    p+=((Math.random()-.43)*420);
+    points.push(p);
+  }
+}
+
+function draw(){
+  const w=canvas.clientWidth,h=canvas.clientHeight;
+  ctx.clearRect(0,0,w,h);
+
+  ctx.strokeStyle="#18212c";
+  ctx.lineWidth=1;
+
+  for(let i=1;i<7;i++){
+    let y=i*h/7;
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();
+  }
+
+  for(let i=1;i<9;i++){
+    let x=i*w/9;
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();
+  }
+
+  let min=Math.min(...points)-300;
+  let max=Math.max(...points)+300;
+
+  ctx.beginPath();
+
+  points.forEach((p,i)=>{
+    const x=i*(w/(points.length-1));
+    const y=h-((p-min)/(max-min))*h;
+
+    if(i===0)ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+  });
+
+  ctx.strokeStyle="#19c37d";
+  ctx.lineWidth=2;
+  ctx.stroke();
+
+  let last=points[points.length-1];
+  let ly=h-((last-min)/(max-min))*h;
+
+  ctx.fillStyle="#19c37d";
+  ctx.beginPath();
+  ctx.arc(w-2,ly,4,0,Math.PI*2);
+  ctx.fill();
+}
+
+function randomize(){
+  base=64000+Math.random()*7000;
+  const change=(Math.random()*6-2);
+  const bullish=change>=0;
+
+  document.getElementById("price").textContent=
+    "$"+base.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  const c=document.getElementById("change");
+  c.textContent=(bullish?"+":"")+change.toFixed(2)+"%";
+  c.className=bullish?"up":"down";
+
+  document.getElementById("trend").textContent=bullish?"BULLISH":"BEARISH";
+  document.getElementById("trend").className=bullish?"up":"down";
+
+  document.getElementById("signal").textContent=bullish?"BUY":"SELL";
+  document.getElementById("signal").style.color=bullish?"#19c37d":"#ef5350";
+
+  document.getElementById("confidence").textContent=
+    Math.floor(65+Math.random()*30)+"%";
+
+  document.getElementById("rsi").textContent=
+    (45+Math.random()*35).toFixed(1);
+
+  document.getElementById("entry").textContent=
+    "$"+Math.round(base).toLocaleString();
+
+  document.getElementById("pivot").textContent=
+    "$"+Math.round(base).toLocaleString();
+
+  document.getElementById("support").textContent=
+    "$"+Math.round(base*.962).toLocaleString();
+
+  document.getElementById("resistance").textContent=
+    "$"+Math.round(base*1.04).toLocaleString();
+
+  document.getElementById("stop").textContent=
+    "$"+Math.round(base*.981).toLocaleString();
+
+  document.getElementById("target").textContent=
+    "$"+Math.round(base*1.04).toLocaleString();
+
+  makeData();
+  draw();
+}
+
+function setTF(btn){
+  document.querySelectorAll(".tf").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  randomize();
+}
+
+function indicator(name){
+  alert(name+" indicator enabled");
+}
+
+function toggleTheme(){
+  document.body.style.background=
+    document.body.style.background==="#080b10"?"#111827":"#080b10";
+}
+
+document.getElementById("asset").addEventListener("change",e=>{
+  document.getElementById("assetName").textContent=e.target.value+" / USD";
+  randomize();
+});
+
+window.addEventListener("resize",resize);
+
+makeData();
+resize();
+</script>
+
+</body>
+</html>
