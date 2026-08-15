@@ -407,7 +407,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // First try the main backend endpoint.
       try {
 
-        response = await fetch("/analyze", {
+        response = await fetch("/api/analyze"... 
           method: "POST",
           body: formData
         });
