@@ -2,449 +2,510 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#080b10">
-<title>TradeLens - Trading Analysis</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TradeLens</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-
-:root{
---bg:#080b10;
---panel:#0f141c;
---panel2:#131a23;
---border:#252e3a;
---text:#e8edf5;
---muted:#7f8b9b;
---green:#19c37d;
---red:#ef5350;
---yellow:#f5b942;
---blue:#4d9fff;
-}
-
+*{box-sizing:border-box}
 body{
-font-family:Arial,Helvetica,sans-serif;
-background:var(--bg);
-color:var(--text);
-min-height:100vh;
+margin:0;background:#080b10;color:#e8edf5;
+font-family:Arial,sans-serif
 }
-
-button,input,select{
-font:inherit;
+header{
+height:64px;padding:0 20px;background:#0d1219;
+border-bottom:1px solid #222b36;
+display:flex;align-items:center;justify-content:space-between
 }
-
-button{
-cursor:pointer;
+.logo{font-size:22px;font-weight:bold}
+.logo span{color:#19c37d}
+.live{color:#19c37d;font-size:12px}
+nav{
+padding:12px 20px;background:#0d1219;
+border-bottom:1px solid #222b36;
+display:flex;gap:8px;flex-wrap:wrap
 }
-
-.topbar{
-height:64px;
-background:#0b0f15;
-border-bottom:1px solid var(--border);
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 18px;
-position:sticky;
-top:0;
-z-index:20;
+select,input,button{
+background:#121923;color:#e8edf5;
+border:1px solid #293443;border-radius:6px;
+padding:10px;font:inherit
 }
-
-.logo{
-font-size:21px;
-font-weight:800;
+button{cursor:pointer}
+button:hover{border-color:#4d9fff}
+main{
+max-width:1500px;margin:auto;padding:14px;
+display:grid;grid-template-columns:1fr 340px;gap:14px
 }
-
-.logo span{
-color:var(--green);
-}
-
-.status{
-font-size:11px;
-color:var(--green);
-}
-
-.controls{
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-padding:12px 18px;
-border-bottom:1px solid var(--border);
-background:var(--panel);
-}
-
-select,
-.tool,
-input{
-background:#121923;
-color:#e8edf5;
-border:1px solid var(--border);
-border-radius:6px;
-padding:9px 10px;
-outline:none;
-}
-
-select:focus,
-input:focus{
-border-color:var(--blue);
-}
-
-.tool:hover{
-border-color:var(--blue);
-}
-
-.layout{
-display:grid;
-grid-template-columns:minmax(0,1fr) 340px;
-gap:12px;
-padding:12px;
-}
-
 .card{
-background:var(--panel);
-border:1px solid var(--border);
-border-radius:10px;
-overflow:hidden;
+background:#0f141c;border:1px solid #222b36;
+border-radius:9px;margin-bottom:14px;overflow:hidden
 }
-
-.cardTitle{
-padding:13px 14px;
-border-bottom:1px solid var(--border);
-font-weight:700;
-display:flex;
-align-items:center;
-justify-content:space-between;
+.title{
+padding:13px 15px;border-bottom:1px solid #222b36;
+font-weight:bold
 }
-
-.chartHeader{
-padding:13px 14px;
-border-bottom:1px solid var(--border);
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
+.chartHead{
+padding:14px;display:flex;justify-content:space-between;
+border-bottom:1px solid #222b36
 }
-
-.assetSymbol{
-font-size:18px;
-font-weight:800;
+.symbol{font-size:19px;font-weight:bold}
+.price{font-size:20px;font-weight:bold}
+.green{color:#19c37d}
+.red{color:#ef5350}
+.yellow{color:#f5b942}
+.chart{
+height:420px;padding:10px;background:#090d13;
+display:flex;align-items:center;justify-content:center
 }
-
-.assetInfo{
-font-size:11px;
-color:var(--muted);
-margin-top:3px;
+canvas{width:100%;height:100%}
+.stats{
+display:grid;grid-template-columns:repeat(4,1fr)
 }
-
-.price{
-font-size:20px;
-font-weight:800;
-}
-
-.up{
-color:var(--green);
-}
-
-.down{
-color:var(--red);
-}
-
-.timeframes{
-display:flex;
-gap:4px;
-padding:8px 12px;
-flex-wrap:wrap;
-border-bottom:1px solid var(--border);
-}
-
-.tf{
-border:0;
-background:transparent;
-color:var(--muted);
-padding:7px 9px;
-border-radius:5px;
-font-size:12px;
-}
-
-.tf.active{
-background:#1b2633;
-color:#fff;
-}
-
-.chartTools{
-display:flex;
-gap:6px;
-padding:9px 12px;
-border-bottom:1px solid var(--border);
-flex-wrap:wrap;
-}
-
-.chartWrap{
-height:430px;
-background:#090d13;
-padding:8px;
-}
-
-canvas{
-width:100%;
-height:100%;
-display:block;
-}
-
-.metrics{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-border-top:1px solid var(--border);
-}
-
-.metric{
-padding:12px;
-border-right:1px solid var(--border);
-}
-
-.metric:last-child{
-border-right:0;
-}
-
-.metric label{
-display:block;
-font-size:10px;
-color:var(--muted);
-margin-bottom:5px;
-}
-
-.metric strong{
-font-size:15px;
-}
-
-.sidebar{
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
+.stat{padding:12px;border-right:1px solid #222b36}
+.stat:last-child{border:0}
+.stat small{display:block;color:#7f8b9b;margin-bottom:5px}
+.stat b{font-size:14px}
 .signal{
-margin:14px;
-padding:16px;
-border-radius:8px;
-background:#10251d;
-border:1px solid #1c5c42;
-text-align:center;
+margin:14px;padding:18px;text-align:center;
+background:#10251d;border:1px solid #1c5c42;border-radius:8px
 }
-
-.signal strong{
-display:block;
-font-size:25px;
-color:var(--green);
-}
-
-.signal small{
-display:block;
-margin-top:5px;
-color:var(--muted);
-}
-
-.rows{
-padding:6px 14px 12px;
-}
-
+.signal b{display:block;font-size:28px;color:#19c37d}
 .row{
-display:flex;
-justify-content:space-between;
-gap:10px;
-padding:10px 0;
-border-bottom:1px solid #1c232d;
-font-size:13px;
+display:flex;justify-content:space-between;
+padding:11px 14px;border-bottom:1px solid #202936;
+font-size:13px
 }
-
-.row:last-child{
-border-bottom:0;
-}
-
-.label{
-color:var(--muted);
-}
-
-/* SCREENSHOT ANALYZER */
-
-.analyzer{
-margin:12px;
-padding:14px;
-border:1px solid var(--border);
-border-radius:9px;
-background:#0b1017;
-}
-
-.uploadBox{
-border:2px dashed #344153;
-border-radius:8px;
-padding:22px 12px;
-text-align:center;
-transition:.2s;
-}
-
-.uploadBox:hover{
-border-color:var(--blue);
-}
-
-.uploadIcon{
-font-size:30px;
-margin-bottom:8px;
-}
-
-.uploadTitle{
-font-weight:700;
-margin-bottom:5px;
-}
-
-.uploadText{
-font-size:11px;
-color:var(--muted);
-margin-bottom:12px;
-}
-
-.uploadButton{
-display:inline-block;
-background:#1b2633;
-border:1px solid var(--border);
-padding:9px 13px;
-border-radius:6px;
-cursor:pointer;
-font-size:12px;
-}
-
-#fileInput{
-display:none;
-}
-
-.preview{
-display:none;
-margin-top:12px;
-}
-
-.preview img{
-width:100%;
-max-height:330px;
-object-fit:contain;
-background:#05080c;
-border:1px solid var(--border);
-border-radius:7px;
-}
-
-.fileName{
-font-size:11px;
-color:var(--muted);
-margin-top:7px;
-word-break:break-all;
-}
-
-.formGrid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-margin-top:12px;
-}
-
-.formGroup label{
-display:block;
-font-size:10px;
-color:var(--muted);
-margin-bottom:5px;
-}
-
-.formGroup input{
-width:100%;
-}
-
-.analyzeButton{
-width:100%;
-margin-top:10px;
-padding:11px;
-border:0;
-border-radius:6px;
-background:var(--green);
-color:#06130d;
-font-weight:800;
-}
-
-.analyzeButton:hover{
-opacity:.9;
-}
-
-.analysisResult{
-display:none;
-margin-top:12px;
-padding:12px;
-border:1px solid var(--border);
-border-radius:7px;
-background:#101720;
-}
-
-.analysisResult h3{
-font-size:14px;
-margin-bottom:10px;
-}
-
-.resultLine{
-display:flex;
-justify-content:space-between;
-padding:8px 0;
-border-bottom:1px solid #202936;
-font-size:12px;
-}
-
-.resultLine:last-child{
-border-bottom:0;
-}
-
+.muted{color:#7f8b9b}
 .level{
-margin:12px 14px;
-padding:10px;
-border-radius:6px;
-background:#121923;
-border-left:3px solid var(--blue);
+margin:10px 14px;padding:11px;
+background:#121923;border-left:3px solid #4d9fff;
+border-radius:5px
+}
+.upload{
+margin:14px;padding:20px;text-align:center;
+border:2px dashed #344153;border-radius:8px
+}
+.upload b{display:block;font-size:17px;margin-bottom:6px}
+.upload p{color:#7f8b9b;font-size:11px}
+#file{display:none}
+.upload label{
+display:inline-block;padding:10px 14px;
+background:#1a2634;border:1px solid #344153;
+border-radius:6px;cursor:pointer
+}
+.preview{display:none;margin:0 14px 14px}
+.preview img{
+width:100%;max-height:400px;object-fit:contain;
+background:#05070a;border:1px solid #293443;border-radius:6px
+}
+.form{padding:14px}
+.form label{
+display:block;color:#7f8b9b;font-size:11px;margin:9px 0 5px
+}
+.form input,.form select{width:100%}
+.analyze{
+width:100%;margin-top:12px;
+background:#19c37d;color:#06130d;
+border:0;font-weight:bold
+}
+.result{
+display:none;margin:14px;padding:14px;
+background:#121923;border:1px solid #293443;border-radius:7px
+}
+.result h3{margin-top:0}
+footer{
+text-align:center;color:#596575;font-size:10px;padding:20px
+}
+@media(max-width:850px){
+main{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+.stats{grid-template-columns:1fr 1fr}
+.stat:nth-child(2){border-right:0}
+.chart{height:330px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">Trade<span>Lens</span></div>
+<div class="live">● ANALYSIS READY</div>
+</header>
+
+<nav>
+<select id="asset">
+<option>BTC / USD</option>
+<option>ETH / USD</option>
+<option>XAU / USD</option>
+<option>EUR / USD</option>
+<option>GBP / USD</option>
+</select>
+<button onclick="refresh()">↻ Refresh</button>
+<button onclick="changeTF('1m')">1m</button>
+<button onclick="changeTF('5m')">5m</button>
+<button onclick="changeTF('15m')">15m</button>
+<button onclick="changeTF('1H')">1H</button>
+<button onclick="changeTF('4H')">4H</button>
+<button onclick="changeTF('1D')">1D</button>
+</nav>
+
+<main>
+
+<section>
+
+<div class="card">
+<div class="chartHead">
+<div>
+<div class="symbol" id="symbol">BTC / USD</div>
+<div class="muted">Trading analysis</div>
+</div>
+<div style="text-align:right">
+<div class="price" id="price">$67,420</div>
+<div class="green" id="change">+2.41%</div>
+</div>
+</div>
+
+<div class="chart">
+<canvas id="chart"></canvas>
+</div>
+
+<div class="stats">
+<div class="stat">
+<small>TREND</small><b class="green" id="trend">BULLISH</b>
+</div>
+<div class="stat">
+<small>RSI</small><b id="rsi">64.8</b>
+</div>
+<div class="stat">
+<small>VOLUME</small><b>HIGH</b>
+</div>
+<div class="stat">
+<small>CONFIDENCE</small><b class="green" id="confidence">82%</b>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="title">📷 Trade Screenshot Analyzer</div>
+
+<div class="upload">
+<b>Upload your trading screenshot</b>
+<p>TradingView, MT4, MT5 or broker screenshot</p>
+
+<label for="file">Choose Screenshot</label>
+<input id="file" type="file" accept="image/*">
+</div>
+
+<div class="preview" id="preview">
+<img id="image" alt="Trade screenshot">
+</div>
+
+<div class="form">
+
+<label>TRADE DIRECTION</label>
+<select id="direction">
+<option>BUY / LONG</option>
+<option>SELL / SHORT</option>
+</select>
+
+<label>ENTRY PRICE</label>
+<input id="entry" type="number" placeholder="Example: 67420">
+
+<label>STOP LOSS</label>
+<input id="stop" type="number" placeholder="Example: 66150">
+
+<label>TAKE PROFIT</label>
+<input id="take" type="number" placeholder="Example: 70100">
+
+<button class="analyze" onclick="analyze()">ANALYZE TRADE</button>
+
+</div>
+
+<div class="result" id="result">
+<h3>Trade Analysis</h3>
+
+<div class="row">
+<span class="muted">Risk</span>
+<b id="risk">—</b>
+</div>
+
+<div class="row">
+<span class="muted">Reward</span>
+<b id="reward">—</b>
+</div>
+
+<div class="row">
+<span class="muted">Risk / Reward</span>
+<b id="rr">—</b>
+</div>
+
+<div class="row">
+<span class="muted">Assessment</span>
+<b id="assessment">—</b>
+</div>
+
+<div class="row">
+<span class="muted">Screenshot</span>
+<b class="green">Uploaded ✓</b>
+</div>
+
+<p class="muted">
+Screenshot preview is working locally. AI chart recognition can be
+connected securely after the dashboard is working.
+</p>
+</div>
+
+</div>
+
+</section>
+
+<aside>
+
+<div class="card">
+<div class="title">Trade Signal</div>
+
+<div class="signal">
+<b id="signal">BUY</b>
+<span class="muted">Bullish structure detected</span>
+</div>
+
+<div class="row">
+<span class="muted">Entry</span>
+<b>$67,420</b>
+</div>
+
+<div class="row">
+<span class="muted">Stop Loss</span>
+<b class="red">$66,150</b>
+</div>
+
+<div class="row">
+<span class="muted">Take Profit</span>
+<b class="green">$70,100</b>
+</div>
+
+<div class="row">
+<span class="muted">Risk / Reward</span>
+<b>1 : 2.1</b>
+</div>
+</div>
+
+<div class="card">
+<div class="title">Key Levels</div>
+
+<div class="level">
+<b>Resistance</b><br>
+<span>$70,100</span>
+</div>
+
+<div class="level">
+<b>Pivot</b><br>
+<span>$67,420</span>
+</div>
+
+<div class="level">
+<b>Support</b><br>
+<span>$64,850</span>
+</div>
+</div>
+
+<div class="card">
+<div class="title">Market Structure</div>
+
+<div class="row">
+<span class="muted">Higher Highs</span>
+<b class="green">YES</b>
+</div>
+
+<div class="row">
+<span class="muted">Higher Lows</span>
+<b class="green">YES</b>
+</div>
+
+<div class="row">
+<span class="muted">Momentum</span>
+<b class="green">STRONG</b>
+</div>
+
+<div class="row">
+<span class="muted">Bias</span>
+<b class="green">BULLISH</b>
+</div>
+</div>
+
+</aside>
+
+</main>
+
+<footer>
+TradeLens • Trading analysis dashboard • Educational use only
+</footer>
+
+<script>
+const canvas=document.getElementById("chart");
+const ctx=canvas.getContext("2d");
+let data=[];
+
+function size(){
+let r=canvas.getBoundingClientRect();
+canvas.width=r.width*devicePixelRatio;
+canvas.height=r.height*devicePixelRatio;
+ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+draw();
 }
 
-.level.red{
-border-left-color:var(--red);
+function makeData(){
+data=[];
+let p=40;
+for(let i=0;i<80;i++){
+p+=(Math.random()-.43)*8;
+data.push(p);
+}
 }
 
-.level.green{
-border-left-color:var(--green);
+function draw(){
+let w=canvas.clientWidth;
+let h=canvas.clientHeight;
+ctx.clearRect(0,0,w,h);
+
+ctx.strokeStyle="#18212c";
+
+for(let i=1;i<7;i++){
+let y=i*h/7;
+ctx.beginPath();
+ctx.moveTo(0,y);
+ctx.lineTo(w,y);
+ctx.stroke();
 }
 
-.level.yellow{
-border-left-color:var(--yellow);
+for(let i=1;i<9;i++){
+let x=i*w/9;
+ctx.beginPath();
+ctx.moveTo(x,0);
+ctx.lineTo(x,h);
+ctx.stroke();
 }
 
-.level b{
-display:block;
-margin-bottom:4px;
+let min=Math.min(...data)-3;
+let max=Math.max(...data)+3;
+
+ctx.beginPath();
+
+data.forEach((p,i)=>{
+let x=i*w/(data.length-1);
+let y=h-(p-min)/(max-min)*h;
+
+if(i===0)ctx.moveTo(x,y);
+else ctx.lineTo(x,y);
+});
+
+ctx.strokeStyle="#19c37d";
+ctx.lineWidth=2;
+ctx.stroke();
 }
 
-.risk{
-padding:14px;
+function refresh(){
+let p=60000+Math.random()*15000;
+document.getElementById("price").textContent=
+"$"+Math.round(p).toLocaleString();
+
+let c=(Math.random()*5-1).toFixed(2);
+document.getElementById("change").textContent=
+(c>=0?"+":"")+c+"%";
+
+document.getElementById("rsi").textContent=
+(45+Math.random()*30).toFixed(1);
+
+document.getElementById("confidence").textContent=
+Math.round(65+Math.random()*30)+"%";
+
+makeData();
+draw();
 }
 
-.riskbar{
-height:8px;
-background:#202936;
-border-radius:5px;
-overflow:hidden;
-margin:8px 0;
+function changeTF(tf){
+document.title="TradeLens - "+tf;
+refresh();
 }
 
-.riskfill{
-height:100%;
-width:35%;
-background:var(--green);
+document.getElementById("asset").onchange=function(){
+document.getElementById("symbol").textContent=this.value;
+refresh();
+};
+
+document.getElementById("file").onchange=function(){
+let f=this.files[0];
+if(!f)return;
+
+let reader=new FileReader();
+
+reader.onload=function(e){
+document.getElementById("image").src=e.target.result;
+document.getElementById("preview").style.display="block";
+};
+
+reader.readAsDataURL(f);
+};
+
+function analyze(){
+
+let entry=parseFloat(document.getElementById("entry").value);
+let stop=parseFloat(document.getElementById("stop").value);
+let take=parseFloat(document.getElementById("take").value);
+let direction=document.getElementById("direction").value;
+
+if(!document.getElementById("file").files.length){
+alert("Please upload your trade screenshot first.");
+return;
 }
 
-.small{
-font-size:11px;
-color:var(--muted);
-line-height:1.5;
+if(!entry||!stop||!take){
+alert("Enter Entry, Stop Loss and Take Profit.");
+return;
 }
 
-.bottom{
-padding:14
+let risk;
+let reward;
+
+if(direction==="BUY / LONG"){
+risk=Math.abs(entry-stop);
+reward=Math.abs(take-entry);
+}else{
+risk=Math.abs(stop-entry);
+reward=Math.abs(entry-take);
+}
+
+let ratio=reward/risk;
+
+document.getElementById("risk").textContent=risk.toFixed(2);
+document.getElementById("reward").textContent=reward.toFixed(2);
+document.getElementById("rr").textContent="1 : "+ratio.toFixed(2);
+
+let a=document.getElementById("assessment");
+
+if(ratio>=3){
+a.textContent="Excellent R:R";
+a.className="green";
+}else if(ratio>=2){
+a.textContent="Good R:R";
+a.className="green";
+}else if(ratio>=1){
+a.textContent="Acceptable R:R";
+a.className="yellow";
+}else{
+a.textContent="Poor R:R";
+a.className="red";
+}
+
+document.getElementById("result").style.display="block";
+}
+
+window.onresize=size;
+
+makeData();
+size();
+</script>
+
+</body>
+</html>
