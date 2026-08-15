@@ -1,82 +1,225 @@
-<!DOCTYPE html>
-<html>
+
+            <!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TradeAI Analyzer</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #0b0f14;
-            color: white;
-            text-align: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TradeLens — Trading Analysis</title>
 
-        header {
-            padding: 30px 20px;
-            background: #111820;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
 
-        h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
+    body {
+      background: #080b10;
+      color: #ffffff;
+      min-height: 100vh;
+    }
 
-        p {
-            color: #aeb8c4;
-            font-size: 16px;
-        }
+    header {
+      padding: 20px;
+      border-bottom: 1px solid #202630;
+      background: #0c1017;
+    }
 
-        .box {
-            margin: 30px 20px;
-            padding: 25px;
-            background: #151d27;
-            border-radius: 15px;
-        }
+    header h1 {
+      font-size: 28px;
+    }
 
-        button {
-            padding: 14px 25px;
-            border: none;
-            border-radius: 10px;
-            background: #2f80ed;
-            color: white;
-            font-size: 16px;
-        }
-    </style>
+    header p {
+      color: #8993a3;
+      margin-top: 5px;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 1200px;
+      margin: 30px auto;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #101722, #0b0f15);
+      border: 1px solid #222a36;
+      border-radius: 16px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+
+    .hero h2 {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #9ba5b5;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: #0d121a;
+      border: 1px solid #222a36;
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      font-size: 19px;
+    }
+
+    label {
+      display: block;
+      color: #9ba5b5;
+      margin: 12px 0 6px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      background: #070a0f;
+      border: 1px solid #2a3340;
+      border-radius: 8px;
+      color: white;
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #5f7188;
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 18px;
+      border: none;
+      border-radius: 9px;
+      background: #ffffff;
+      color: #080b10;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 10px;
+      background: #080c12;
+      border: 1px solid #252e3b;
+    }
+
+    .signal {
+      font-size: 26px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .bullish {
+      color: #35d07f;
+    }
+
+    .bearish {
+      color: #ff5f64;
+    }
+
+    .neutral {
+      color: #f1c75b;
+    }
+
+    .meter {
+      width: 100%;
+      height: 10px;
+      background: #202733;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 50%;
+      background: #35d07f;
+      transition: 0.4s;
+    }
+
+    .levels {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .level {
+      padding: 14px;
+      background: #111722;
+      border-radius: 9px;
+      text-align: center;
+    }
+
+    .level span {
+      display: block;
+      color: #8993a3;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    footer {
+      text-align: center;
+      color: #657080;
+      padding: 30px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .levels {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-    <h1>TradeAI Analyzer</h1>
-    <p>AI-powered trading chart analyzer</p>
+  <h1>TradeLens</h1>
+  <p>Market analysis dashboard</p>
 </header>
 
-<div class="box">
-    <h2>📊 TradeAI Chart Analyzer</h2>
+<div class="container">
 
-    <p>Upload a trading chart and prepare it for analysis.</p>
+  <section class="hero">
+    <h2>Trading Analysis</h2>
+    <p>
+      Enter the current market information below to generate a simple
+      technical-style market bias.
+    </p>
+  </section>
 
-    <input type="file" id="chartUpload" accept="image/*" onchange="previewChart()">
+  <div class="grid">
 
-    <br><br>
+    <div class="card">
+      <h3>Market Input</h3>
 
-    <img id="chartPreview"
-         style="display:none; max-width:100%; border-radius:12px; margin-top:10px;">
-
-    <br>
-
-    <button onclick="analyze()">Analyze Chart</button>
-
-    <div id="result" style="margin-top:20px;"></div>
-</div>
-
-<script>
-function analyze() {
-    document.getElementById("result").innerText =
-        "Upload/chart analysis feature coming next.";
-}
-</script>
-
-</body>
-</html>
+      <label for="asset">Asset</label>
+      <select id="asset">
+        <option>Gold (XAU/USD)</option>
+        <option>EUR/USD</option
